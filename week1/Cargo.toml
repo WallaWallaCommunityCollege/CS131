@@ -1,0 +1,10 @@
+[package]
+name = "ch1p35_5_plus_more_michael_cummings"
+version = "0.1.0"
+authors = ["Michael Cummings <mgcummings@yahoo.com>"]
+
+[dependencies]
+
+[[bin]]
+name = "ch1p35_5plus_more_michael_cummings"
+path = "ch1p35_5plus_more_michael_cummings.rs"
