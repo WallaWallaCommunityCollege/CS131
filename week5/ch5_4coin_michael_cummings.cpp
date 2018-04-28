@@ -10,12 +10,12 @@
  * Algorithm
  * START
  * Init global constants for coins types.
- * Show intro.
+ * Display intro.
  * Init vars.
  * DO
  *     Get cents value from user.
  *     FOREACH coin type
- *         Compute number of coins.
+ *         Compute number of this coin type needed.
  *         Display num of coins needed for type.
  * WHILE User wants to continue.
  * END
@@ -30,8 +30,10 @@
 using namespace std;
 const int QUARTER = 25;
 const int DIME = 10;
+const int NICKEL = 5;
 const int PENNY = 1;
 /**
+ * Required function per task.
  *
  * @param coin_value int
  * @param num int
@@ -64,23 +66,28 @@ bool tryAgain();
  */
 int main() {
     intro();
-    int amount_left, coin_value, num;
-    array<int, 3> coins = {QUARTER, DIME, PENNY};
+    int amount_left, num, total_coins;
+    array<int, 4> coins = {QUARTER, DIME, NICKEL, PENNY};
+    // Init lambda closures (functions).
     auto checkAmount = [](int value) {
         return (0 <= value && 100 > value);
     };
     do {
-        num = 0;
+        total_coins = 0;
         amount_left =
             getInput("Enter amount in cents:\n",
                      "MUST enter amount as integer number of cents(pennies)\n",
                      checkAmount);
         // FOREACH coin type
         for (int &coin: coins) {
+            num = 0;
             try {
                 compute_coins(coin, num, amount_left);
+                total_coins += num;
+                // Input validation should keep this from ever happening.
             } catch (out_of_range e) {
                 cout << "The following exception happened: \n" << e.what() << endl;
+                break;
             }
             switch (coin) {
                 case QUARTER:
@@ -89,10 +96,14 @@ int main() {
                 case DIME:
                     cout << "and " << num << " dimes\n";
                     break;
+                case NICKEL:
+                    cout << "and " << num << " nickels\n";
+                    break;
                 default:
                     cout << "and " << num << " pennies\n";
             }
         }
+        cout << "Total number of coins " << total_coins << endl;
     } while (tryAgain());
 }
 /**
@@ -114,11 +125,11 @@ int main() {
 void compute_coins(int coin_value, int &num, int &amount_left) {
     if (0 >= coin_value || coin_value > 100) {
         const char *mess = "Coin value MUST be between 0 and 100";
-        throw out_of_range(mess);
+        throw out_of_range(mess); // NOLINT
     }
-    if (0 >= amount_left || amount_left > 100) {
-        const char *mess = "Amount left MUST be between 0 and 100";
-        throw out_of_range(mess);
+    if (0 >= amount_left) {
+        num = 0;
+        return;
     }
     if (amount_left >= coin_value) {
         num = amount_left / coin_value;
@@ -152,7 +163,7 @@ bool tryAgain() {
     string inpString;
     while (true) {
         // Ask to repeat.
-        cout << "Try another amount(Y/n)?:\n";
+        cout << "Try again(Y/n)?:\n";
         cin >> inpString;
 #ifdef _MSC_VER
         system("cls");
