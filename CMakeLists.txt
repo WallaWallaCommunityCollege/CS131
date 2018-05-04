@@ -19,8 +19,6 @@ add_executable(junk week4/test.cpp)
 # week5
 add_executable(ch5_4coin_michael_cummings week5/ch5_4coin_michael_cummings.cpp)
 add_executable(ReadWriteFile week5/ReadWriteFile.cpp)
-add_custom_command(
-        TARGET ReadWriteFile POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/week5/infile.dat
-        ${CMAKE_CURRENT_BINARY_DIR}/infile.dat)
+configure_file(${CMAKE_SOURCE_DIR}/week5/infile.dat ${CMAKE_CURRENT_BINARY_DIR}/infile.dat COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/week5/scores.dat ${CMAKE_CURRENT_BINARY_DIR}/scores.dat COPYONLY)
+add_executable(ch6_2scores_michael_cummings week5/ch6_2scores_michael_cummings.cpp)

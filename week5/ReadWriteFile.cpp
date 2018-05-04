@@ -24,11 +24,17 @@ int main() {
         cout << "Output file opening failed.\n";
         exit(1);
     }
-    int first, second, third, forth;
-    in_stream >> first >> second >> third >> forth;
-    out_stream << "The sum of the first 4\n" << "numbers in infile.dat\n" << "is " << (first + second + third + forth)
+    int cnt = 0, input = 0, total = 0;
+    while (!in_stream.eof()) {
+        in_stream >> input;
+        total += input;
+        ++cnt;
+    }
+//    int first, second, third, forth;
+//    in_stream >> first >> second >> third >> forth;
+    out_stream << "The sum of the first " << cnt << endl << "numbers in infile.dat\n" << "is " << total
                << endl;
     in_stream.close();
     out_stream.close();
-    return 0;
+    exit(0);
 }
